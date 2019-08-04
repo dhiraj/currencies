@@ -4,8 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.dhirajgupta.currencies.App
 import com.dhirajgupta.currencies.ServiceLocator
-import com.dhirajgupta.currencies.db.CurrencyDatabase
-import com.dhirajgupta.currencies.model.Currency
+import com.dhirajgupta.currencies.model.OCurrency
 import com.dhirajgupta.currencies.repository.CurrencyRepository
 import timber.log.Timber
 
@@ -14,11 +13,16 @@ import timber.log.Timber
  */
 class CurrencyViewModel: ViewModel() {
     private val repository: CurrencyRepository
-    val allCurrencies: LiveData<List<Currency>>
+
+    val allCurrencies: LiveData<List<OCurrency>>
 
     init {
         repository = ServiceLocator.instance(App.instance).getRepository()
         allCurrencies = repository.allCurrencies
         Timber.i("CurrencyViewModel inited...")
+    }
+
+    fun refreshCurrencies(){
+        repository.refreshCurrencies()
     }
 }

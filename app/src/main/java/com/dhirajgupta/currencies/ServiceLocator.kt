@@ -83,7 +83,7 @@ open class DefaultServiceLocator(val app: Application, val useInMemoryDb: Boolea
     }
 
     override fun getRepository(): CurrencyRepository {
-        return CurrencyRepository(db,api)
+        return CurrencyRepository(db,api,NETWORK_IO,DISK_IO)
 //        return when (type) {
 //            RedditPostRepository.Type.IN_MEMORY_BY_ITEM -> InMemoryByItemRepository(
 //                    redditApi = getRedditApi(),

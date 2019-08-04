@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
  * A model / room data class that will store data about a particular currency.
  */
 @Entity(tableName = "currency")
-data class Currency(
+data class OCurrency(
     /**
      * The currency's 3 letter ISO code
      */
@@ -22,5 +22,5 @@ data class Currency(
     /**
      * The current / last known price of the currency against 1 US Dollar
      */
-    val price: Double = 0.toDouble()
+    var price: Double = 0.toDouble()
 )

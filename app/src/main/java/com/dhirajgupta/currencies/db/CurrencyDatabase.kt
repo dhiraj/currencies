@@ -4,17 +4,17 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.dhirajgupta.currencies.model.Currency
+import com.dhirajgupta.currencies.model.OCurrency
 
 
 /**
  * The Room Database class that will manage the backing SQLite persistence database to the Currencies app
  */
-@Database(entities = [Currency::class], version = 1)
+@Database(entities = [OCurrency::class], version = 1)
 abstract class CurrencyDatabase: RoomDatabase() {
 
     /**
-     * The main Currency DAO that will be used throughout the app
+     * The main OCurrency DAO that will be used throughout the app
      */
     abstract fun currencyDao(): CurrencyDao
 

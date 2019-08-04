@@ -1,5 +1,6 @@
 package com.dhirajgupta.currencies.api
 
+import com.dhirajgupta.currencies.model.OCurrency
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -11,13 +12,13 @@ import timber.log.Timber
 import java.util.*
 
 interface CurrencyAPI {
-    @GET("/names.json")
+    @GET("names.json")
     fun getNames(): Call<CurrenciesResponse>
 
-    @GET("/prices.json")
+    @GET("prices.json")
     fun getPrices(): Call<CurrenciesResponse>
 
-    class CurrenciesResponse(val currencies:Currency)
+    class CurrenciesResponse(val currencies:List<OCurrency>)
 
     companion object {
         private const val BASE_URL = "https://storage.googleapis.com/public-static-artifacts/currencies/"
