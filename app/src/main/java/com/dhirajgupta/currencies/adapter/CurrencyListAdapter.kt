@@ -1,12 +1,11 @@
-package com.dhirajgupta.currencies.adapters
+package com.dhirajgupta.currencies.adapter
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.dhirajgupta.currencies.R
-import com.dhirajgupta.currencies.models.Currency
+import com.dhirajgupta.currencies.model.Currency
 import kotlinx.android.synthetic.main.cellview_currency.view.*
 
 class CurrencyListAdapter(): RecyclerView.Adapter<CurrencyListAdapter.CurrencyViewHolder>() {

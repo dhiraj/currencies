@@ -1,4 +1,4 @@
-package com.dhirajgupta.currencies.fragments
+package com.dhirajgupta.currencies.fragment
 
 
 import android.os.Bundle

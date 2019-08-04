@@ -1,4 +1,4 @@
-package com.dhirajgupta.currencies.fragments
+package com.dhirajgupta.currencies.fragment
 
 
 import android.os.Bundle
@@ -11,8 +11,8 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.dhirajgupta.currencies.R
-import com.dhirajgupta.currencies.adapters.CurrencyListAdapter
-import com.dhirajgupta.currencies.viewmodels.CurrencyViewModel
+import com.dhirajgupta.currencies.adapter.CurrencyListAdapter
+import com.dhirajgupta.currencies.viewmodel.CurrencyViewModel
 import kotlinx.android.synthetic.main.fragment_currency_list.*
 import timber.log.Timber
 

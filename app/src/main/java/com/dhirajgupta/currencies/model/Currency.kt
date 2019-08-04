@@ -1,4 +1,4 @@
-package com.dhirajgupta.currencies.models
+package com.dhirajgupta.currencies.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
