@@ -46,7 +46,7 @@ class CurrencyListFragment : Fragment() {
         }
         viewModel.allCurrencies.observe(this@CurrencyListFragment, Observer { currencies ->
             Timber.i("Currencies updated: ${currencies.size}")
-            (recyclerview_currency.adapter as CurrencyListAdapter).setCurrencies(currencies)
+            (recyclerview_currency.adapter as CurrencyListAdapter).submitList(currencies)
         })
         viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
         swipe_container.setOnRefreshListener {
