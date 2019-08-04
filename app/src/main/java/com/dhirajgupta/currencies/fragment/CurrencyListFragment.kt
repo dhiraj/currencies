@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.dhirajgupta.currencies.R
 import com.dhirajgupta.currencies.adapter.CurrencyListAdapter
+import com.dhirajgupta.currencies.model.NetworkState
+import com.dhirajgupta.currencies.model.Status
 import com.dhirajgupta.currencies.viewmodel.CurrencyViewModel
 import kotlinx.android.synthetic.main.fragment_currency_list.*
 import timber.log.Timber
@@ -31,6 +33,11 @@ class CurrencyListFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_currency_list, container, false)
     }
 
+    val networkStateObserver = Observer { state: NetworkState ->
+        Timber.i("Network status changed: $state")
+        swipe_container.isRefreshing = state.status == Status.RUNNING
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recyclerview_currency.apply {
@@ -41,6 +48,9 @@ class CurrencyListFragment : Fragment() {
             Timber.i("Currencies updated: ${currencies.size}")
             (recyclerview_currency.adapter as CurrencyListAdapter).setCurrencies(currencies)
         })
-        viewModel.refreshCurrencies()
+        viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
+        swipe_container.setOnRefreshListener {
+            viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
+        }
     }
 }

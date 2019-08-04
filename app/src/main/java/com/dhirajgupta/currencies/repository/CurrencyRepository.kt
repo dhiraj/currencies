@@ -28,6 +28,7 @@ class CurrencyRepository(val db:CurrencyDatabase, private val api: CurrencyAPI, 
         networkState.value = NetworkState.LOADING
         networkExecutor.execute {
             try {
+                Thread.sleep(2000)
                 val namesResponse = api.getNames().execute()
                 var body = namesResponse.body()
                 if (!namesResponse.isSuccessful || body  == null){
@@ -52,11 +53,11 @@ class CurrencyRepository(val db:CurrencyDatabase, private val api: CurrencyAPI, 
                 networkState.postValue(NetworkState.LOADED)
             }
             catch (ioe:IOException){
-                Timber.e(ioe,"Failed to get response!!!!")
+                Timber.e(ioe,"IOException Failed to get response!!!!")
                 networkState.postValue(NetworkState.error(ioe.message))
             }
             catch (re:RuntimeException){
-                Timber.e(re,"Failed to get response!!!!")
+                Timber.e(re,"RuntimeException Failed to get response!!!!")
                 networkState.postValue(NetworkState.error(re.message))
             }
         }

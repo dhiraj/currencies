@@ -1,9 +1,11 @@
 package com.dhirajgupta.currencies.viewmodel
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.dhirajgupta.currencies.App
 import com.dhirajgupta.currencies.ServiceLocator
+import com.dhirajgupta.currencies.model.NetworkState
 import com.dhirajgupta.currencies.model.OCurrency
 import com.dhirajgupta.currencies.repository.CurrencyRepository
 import timber.log.Timber
@@ -22,7 +24,7 @@ class CurrencyViewModel: ViewModel() {
         Timber.i("CurrencyViewModel inited...")
     }
 
-    fun refreshCurrencies(){
-        repository.refreshCurrencies()
+    fun refreshCurrencies():LiveData<NetworkState>{
+        return repository.refreshCurrencies()
     }
 }
