@@ -20,7 +20,22 @@ class OCurrencyDiffCallback : DiffUtil.ItemCallback<OCurrency>() {
 }
 
 class CurrencyListAdapter() : ListAdapter<OCurrency, CurrencyListAdapter.CurrencyViewHolder>(OCurrencyDiffCallback()) {
-    inner class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+    var chosenCurrency:OCurrency? = null
+        set(newvalue:OCurrency?){
+            field = newvalue
+            notifyDataSetChanged()
+        }
+    var clicked: ((OCurrency) -> Unit)? = null
+    inner class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+        init {
+            itemView.setOnClickListener {
+                val listener = clicked
+                if (listener != null){
+                    listener(getItem(layoutPosition))
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CurrencyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.cellview_currency, parent, false)
@@ -32,6 +47,15 @@ class CurrencyListAdapter() : ListAdapter<OCurrency, CurrencyListAdapter.Currenc
         val cellView = holder.itemView
         cellView.textview_isocode.text = item.iso_code
         cellView.textview_name.text = item.name
-        cellView.textview_price.text = item.price.toString()
+        val setCurrency = chosenCurrency
+        if (setCurrency != null){
+            val calculatedQuote = (1.toDouble() / setCurrency.price) * item.price
+            cellView.textview_price.text = calculatedQuote.toString()
+        }
+        else{
+            cellView.textview_price.text = item.price.toString()
+        }
     }
+
+
 }

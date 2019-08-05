@@ -8,7 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.dhirajgupta.currencies.MainActivity
 
 import com.dhirajgupta.currencies.R
 import com.dhirajgupta.currencies.adapter.CurrencyListAdapter
@@ -24,8 +27,7 @@ import timber.log.Timber
  *
  */
 class CurrencyListFragment : Fragment() {
-    val viewModel by viewModels<CurrencyViewModel>()
-
+    var autoFetchedCurrencyList = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -39,25 +41,41 @@ class CurrencyListFragment : Fragment() {
         swipe_container.isRefreshing = state.status == Status.RUNNING
     }
 
+    fun currencyListAdapter() = recyclerview_currency.adapter as CurrencyListAdapter
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerview_currency.apply {
-            adapter = CurrencyListAdapter()
-            layoutManager = LinearLayoutManager(view.context)
-        }
-        viewModel.allCurrencies.observe(this@CurrencyListFragment, Observer { currencies ->
-            Timber.i("Currencies updated: ${currencies.size}")
-            (recyclerview_currency.adapter as CurrencyListAdapter).submitList(currencies)
-        })
-        viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
-        swipe_container.setOnRefreshListener {
-            viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
-        }
-        viewModel.chosenCurrency.observe(this@CurrencyListFragment, Observer {
-            Timber.i("Chosen currency changed: $it")
-            if (it == null){
-                viewModel.chooseCurrency(DEFAULT_CURRENCY_ISO)
+        val parentActivity = activity
+        if (parentActivity != null){
+            val viewModel = ViewModelProviders.of(parentActivity).get(CurrencyViewModel::class.java)
+            recyclerview_currency.apply {
+                adapter = CurrencyListAdapter()
+                layoutManager = LinearLayoutManager(view.context)
             }
-        })
+            viewModel.allCurrencies.observe(this@CurrencyListFragment, Observer { currencies ->
+                Timber.i("Currencies updated: ${currencies.size}")
+                currencyListAdapter().submitList(currencies)
+                if (currencies.size == 0 && !autoFetchedCurrencyList){
+                    autoFetchedCurrencyList = true
+                    viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
+                }
+            })
+            swipe_container.setOnRefreshListener {
+                viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
+            }
+            viewModel.chosenCurrency.observe(this@CurrencyListFragment, Observer {
+                Timber.i("Chosen currency changed: $it")
+                if (it == null){
+                    viewModel.chooseCurrency(DEFAULT_CURRENCY_ISO)
+                }
+                else{
+                    viewModel.currentScreenTitle.postValue(getString(R.string.currency_list_title_template).format(it.iso_code))
+                    currencyListAdapter().chosenCurrency = it
+                }
+            })
+            currencyListAdapter().clicked = {
+                viewModel.chooseCurrency(it.iso_code)
+            }
+        }
     }
 }

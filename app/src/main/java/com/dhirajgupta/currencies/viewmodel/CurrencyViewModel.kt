@@ -16,6 +16,7 @@ import timber.log.Timber
  */
 class CurrencyViewModel: ViewModel() {
     private val repository: CurrencyRepository
+    var currentScreenTitle: MutableLiveData<String> = MutableLiveData()
 
     val allCurrencies: LiveData<List<OCurrency>>
     val chosenCurrency: LiveData<OCurrency>
@@ -34,4 +35,5 @@ class CurrencyViewModel: ViewModel() {
     fun chooseCurrency(iso_code:String){
         repository.chooseCurrencyWithSymbol(iso_code)
     }
+
 }
