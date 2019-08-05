@@ -5,6 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.dhirajgupta.currencies.model.KVPair
 import com.dhirajgupta.currencies.model.OCurrency
 
 
@@ -32,4 +33,13 @@ interface CurrencyDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg currency: OCurrency)
 
+    @Query("SELECT * from kvpair WHERE k = :k")
+    fun getKVPair(k:String): LiveData<KVPair>
+
+    @Query("SELECT * from currency where iso_code = (select v from kvpair where k = 'CHOSEN_ISO')")
+    fun getChosenCurrency(): LiveData<OCurrency>
+
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insert(kvPair: KVPair)
 }

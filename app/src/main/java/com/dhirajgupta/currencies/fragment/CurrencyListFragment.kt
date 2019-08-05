@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 
 import com.dhirajgupta.currencies.R
 import com.dhirajgupta.currencies.adapter.CurrencyListAdapter
+import com.dhirajgupta.currencies.model.DEFAULT_CURRENCY_ISO
 import com.dhirajgupta.currencies.model.NetworkState
 import com.dhirajgupta.currencies.model.Status
 import com.dhirajgupta.currencies.viewmodel.CurrencyViewModel
@@ -52,5 +53,11 @@ class CurrencyListFragment : Fragment() {
         swipe_container.setOnRefreshListener {
             viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
         }
+        viewModel.chosenCurrency.observe(this@CurrencyListFragment, Observer {
+            Timber.i("Chosen currency changed: $it")
+            if (it == null){
+                viewModel.chooseCurrency(DEFAULT_CURRENCY_ISO)
+            }
+        })
     }
 }
