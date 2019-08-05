@@ -10,6 +10,7 @@
         android:id="@+id/textview_amount_input_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
         tools:text="@string/enter_amount_helptext_template"/>
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"

@@ -22,6 +22,10 @@ enum class Status {
     FAILED
 }
 
+/**
+ * Copied from the [PagingWithNetwork] sample from https://github.com/googlesamples/android-architecture-components/tree/master/PagingWithNetworkSample
+ * Provides us a way to hook up the [SwipeRefreshLayout] to show spinning status while we're doing an API fetch
+ */
 @Suppress("DataClassPrivateConstructor")
 data class NetworkState private constructor(
         val status: Status,

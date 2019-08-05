@@ -1,0 +1,23 @@
+
+
+### All Types
+
+| Name | Summary |
+|---|---|
+| [com.dhirajgupta.currencies.fragment.AmountInputFragment](../com.dhirajgupta.currencies.fragment/-amount-input-fragment/index.md) | A fragment that handles the user's input to set the chosen amount that will be converted. |
+| [com.dhirajgupta.currencies.App](../com.dhirajgupta.currencies/-app/index.md) | Standard Android App subclass that is useful for most Apps. By providing the shared instance of the App object, we are able to access the Application Context anywhere that it is useful. |
+| [com.dhirajgupta.currencies.api.CurrencyAPI](../com.dhirajgupta.currencies.api/-currency-a-p-i/index.md) | Standard Retrofit / GSON API class to parse the response from the given API endpoints. Creates [OCurrency](../com.dhirajgupta.currencies.model/-o-currency/index.md) objects which will be saved by the [CurrencyRepository](#). |
+| [com.dhirajgupta.currencies.db.CurrencyDao](../com.dhirajgupta.currencies.db/-currency-dao/index.md) | A DAO interface that will allow Room to work with the currency table |
+| [com.dhirajgupta.currencies.db.CurrencyDatabase](../com.dhirajgupta.currencies.db/-currency-database/index.md) | The Room Database class that will manage the backing SQLite persistence database to the Currencies app. |
+| [com.dhirajgupta.currencies.adapter.CurrencyListAdapter](../com.dhirajgupta.currencies.adapter/-currency-list-adapter/index.md) | [ListAdapter](#) subclass that allows us to adapt our [OCurrency](../com.dhirajgupta.currencies.model/-o-currency/index.md) model to be presented to the user in a [RecyclerView](#) Fairly, standard and straightforward implementation that calculates the conversion quote given the chosen currency and the amount to be converted. |
+| [com.dhirajgupta.currencies.fragment.CurrencyListFragment](../com.dhirajgupta.currencies.fragment/-currency-list-fragment/index.md) | Shows the list of all the currencies currently available along with the exchange rate for the chosen base currency |
+| [com.dhirajgupta.currencies.repository.CurrencyRepository](../com.dhirajgupta.currencies.repository/-currency-repository/index.md) | A Repository to provide centralized abstraction for access to currency data to the rest of the app |
+| [com.dhirajgupta.currencies.viewmodel.CurrencyViewModel](../com.dhirajgupta.currencies.viewmodel/-currency-view-model/index.md) | The main view model of the Currencies app. Shared across the [MainActivity](#) as well as by both [CurrencyListFragment](#) and [AmountInputFragment](#). |
+| [com.dhirajgupta.currencies.DefaultServiceLocator](../com.dhirajgupta.currencies/-default-service-locator/index.md) | default implementation of ServiceLocator that uses production endpoints. |
+| [com.dhirajgupta.currencies.model.KVPair](../com.dhirajgupta.currencies.model/-k-v-pair/index.md) | The [KVPair](../com.dhirajgupta.currencies.model/-k-v-pair/index.md) model is used as a standard way for the app to persist any key value pair. Using a KVPair like this allows us to have the LiveData machinery supported through Room available to power the UI directly instead of resorting to clumsy SharedPreferences mechanisms. |
+| [com.dhirajgupta.currencies.MainActivity](../com.dhirajgupta.currencies/-main-activity/index.md) | The Main (and only) [AppCompatActivity](#) of the app. Hosts the Navigation Host Fragment for the JetPack Navigation architecture component and sets up a Toolbar as standard Appbar / Actionbar that is used throughout the app. |
+| [com.dhirajgupta.currencies.model.NetworkState](../com.dhirajgupta.currencies.model/-network-state/index.md) | Copied from the [PagingWithNetwork](#) sample from https://github.com/googlesamples/android-architecture-components/tree/master/PagingWithNetworkSample Provides us a way to hook up the [SwipeRefreshLayout](#) to show spinning status while we're doing an API fetch |
+| [com.dhirajgupta.currencies.model.OCurrency](../com.dhirajgupta.currencies.model/-o-currency/index.md) | A model / room data class that will store data about a particular currency. The Name OCurrency is chosen to prevent mistaken conflicts with Java's Currency class. |
+| [com.dhirajgupta.currencies.adapter.OCurrencyDiffCallback](../com.dhirajgupta.currencies.adapter/-o-currency-diff-callback/index.md) | Standard [DiffUtil.Callback](#) subclass to allow faster updates when the user's chosen currency or amount changes, or when the [CurrencyApi](#) returns updated results. |
+| [com.dhirajgupta.currencies.ServiceLocator](../com.dhirajgupta.currencies/-service-locator/index.md) | Super simplified service locator implementation to allow us to replace default implementations for testing. |
+| [com.dhirajgupta.currencies.model.Status](../com.dhirajgupta.currencies.model/-status/index.md) |  |

@@ -40,7 +40,7 @@ android {
         jvmTarget = "1.8"
     }
     dokka {
-        outputFormat = 'html'
+        outputFormat = 'gfm'
         outputDirectory = "$buildDir/javadoc"
     }
 }

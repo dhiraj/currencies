@@ -8,9 +8,11 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
-import timber.log.Timber
-import java.util.*
 
+/**
+ * Standard Retrofit / GSON API class to parse the response from the given API endpoints. Creates [OCurrency] objects
+ * which will be saved by the [CurrencyRepository].
+ */
 interface CurrencyAPI {
     @GET("names.json")
     fun getNames(): Call<CurrenciesResponse>

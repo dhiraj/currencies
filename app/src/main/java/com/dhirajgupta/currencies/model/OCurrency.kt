@@ -5,6 +5,7 @@ import androidx.room.PrimaryKey
 
 /**
  * A model / room data class that will store data about a particular currency.
+ * The Name OCurrency is chosen to prevent mistaken conflicts with Java's Currency class.
  */
 @Entity(tableName = "currency")
 data class OCurrency(
