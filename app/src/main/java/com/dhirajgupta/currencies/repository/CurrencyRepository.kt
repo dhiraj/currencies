@@ -5,42 +5,58 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.dhirajgupta.currencies.api.CurrencyAPI
 import com.dhirajgupta.currencies.db.CurrencyDatabase
-import com.dhirajgupta.currencies.model.OCurrency
+import com.dhirajgupta.currencies.model.KVPair
+import com.dhirajgupta.currencies.model.K_CHOSEN_CURRENCY
 import com.dhirajgupta.currencies.model.NetworkState
+import com.dhirajgupta.currencies.model.OCurrency
 import timber.log.Timber
 import java.io.IOException
 import java.util.concurrent.Executor
-import kotlin.RuntimeException
 
 /**
  * A Repository to provide centralized abstraction for access to currency data to the rest of the app
  * @param currencyDao The OCurrency Data Access Object class that will be used to work with Room OCurrency data*
  */
-class CurrencyRepository(val db:CurrencyDatabase, private val api: CurrencyAPI, val networkExecutor:Executor, val ioExecutor:Executor) {
+class CurrencyRepository(
+    val db: CurrencyDatabase,
+    private val api: CurrencyAPI,
+    val networkExecutor: Executor,
+    val ioExecutor: Executor
+) {
 
     /**
      *  Getter property that returns all the currencies that are currently available
      */
     val allCurrencies = db.currencyDao().getAllCurrencies()
 
-    fun refreshCurrencies():LiveData<NetworkState>{
+    val chosenCurrency = db.currencyDao().getChosenCurrency()
+
+    fun allCurrenciesOtherThan(currency: OCurrency?): LiveData<List<OCurrency>> {
+        return when (currency) {
+            null -> allCurrencies
+            else -> db.currencyDao().getAllOtherCurrencies(currency.iso_code)
+        }
+    }
+
+    fun refreshCurrencies(): LiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
         networkExecutor.execute {
             try {
+//                Thread.sleep(1500)
                 val namesResponse = api.getNames().execute()
                 var body = namesResponse.body()
-                if (!namesResponse.isSuccessful || body  == null){
+                if (!namesResponse.isSuccessful || body == null) {
                     throw RuntimeException("Could not get names response body!")
                 }
                 val names = body.currencies
                 val pricesResponse = api.getPrices().execute()
                 body = pricesResponse.body()
-                if (!pricesResponse.isSuccessful || body == null){
+                if (!pricesResponse.isSuccessful || body == null) {
                     throw java.lang.RuntimeException("Could not get prices response body!")
                 }
                 val prices = body.currencies
-                val filled = names.zip(prices){name,quote ->
+                val filled = names.zip(prices) { name, quote ->
                     name.price = quote.price
                     return@zip name
                 }.toTypedArray()
@@ -50,24 +66,24 @@ class CurrencyRepository(val db:CurrencyDatabase, private val api: CurrencyAPI, 
                 }
                 Timber.i("Upserted ${filled.size} currencies.")
                 networkState.postValue(NetworkState.LOADED)
-            }
-            catch (ioe:IOException){
-                Timber.e(ioe,"Failed to get response!!!!")
+            } catch (ioe: IOException) {
+                Timber.e(ioe, "IOException Failed to get response!!!!")
                 networkState.postValue(NetworkState.error(ioe.message))
-            }
-            catch (re:RuntimeException){
-                Timber.e(re,"Failed to get response!!!!")
+            } catch (re: RuntimeException) {
+                Timber.e(re, "RuntimeException Failed to get response!!!!")
                 networkState.postValue(NetworkState.error(re.message))
             }
         }
         return networkState
     }
 
-    /**
-     * Function to add a new currency into the system. Will mostly be called only from within?
-     */
-    @WorkerThread
-    suspend fun insert(currency: OCurrency){
-        db.currencyDao().insert(currency)
+    fun chooseCurrencyWithSymbol(iso_code: String) {
+        ioExecutor.execute {
+            if (db.currencyDao().getCurrencyCount() == 0) {
+                Timber.i("Cannot set default currency because there aren't any in the DB, waiting for refresh from Net...")
+                return@execute
+            }
+            db.currencyDao().insert(KVPair(K_CHOSEN_CURRENCY, iso_code))
+        }
     }
 }

@@ -4,13 +4,18 @@
             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/main_nav"
             app:startDestination="@id/currencyListFragment">
 
-    <fragment android:id="@+id/currencyListFragment"
-              android:name="com.dhirajgupta.currencies.fragment.CurrencyListFragment"
-              android:label="app_name" tools:layout="@layout/fragment_currency_list">
-        <action android:id="@+id/action_currencyListFragment_to_currencyDetailFragment"
-                app:destination="@id/currencyDetailFragment"/>
+    <fragment
+        android:id="@+id/currencyListFragment"
+        android:name="com.dhirajgupta.currencies.fragment.CurrencyListFragment"
+        tools:layout="@layout/fragment_currency_list">
+        <action
+            android:id="@+id/action_currencyListFragment_to_amountInputFragment"
+            app:destination="@id/amountInputFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
-    <fragment android:id="@+id/currencyDetailFragment"
-              android:name="com.dhirajgupta.currencies.fragment.CurrencyDetailFragment"
-              android:label="fragment_currency_detail" tools:layout="@layout/fragment_currency_detail"/>
+    <fragment
+        android:id="@+id/amountInputFragment"
+        android:name="com.dhirajgupta.currencies.fragment.AmountInputFragment"
+        tools:layout="@layout/fragment_amount_input" />
 </navigation>
