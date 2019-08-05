@@ -13,4 +13,4 @@ data class KVPair (
 const val K_CHOSEN_CURRENCY = "CHOSEN_ISO"
 const val K_CHOSEN_AMOUNT = "CHOSEN_AMOUNT"
 
-const val DEFAULT_CURRENCY_ISO = "USD"
+const val DEFAULT_CURRENCY_ISO = "CAD"

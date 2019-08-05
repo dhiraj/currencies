@@ -21,10 +21,7 @@ class OCurrencyDiffCallback : DiffUtil.ItemCallback<OCurrency>() {
 
 class CurrencyListAdapter() : ListAdapter<OCurrency, CurrencyListAdapter.CurrencyViewHolder>(OCurrencyDiffCallback()) {
     var chosenCurrency:OCurrency? = null
-        set(newvalue:OCurrency?){
-            field = newvalue
-            notifyDataSetChanged()
-        }
+    var amount: Double = 1.toDouble()
     var clicked: ((OCurrency) -> Unit)? = null
     inner class CurrencyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         init {
@@ -49,7 +46,7 @@ class CurrencyListAdapter() : ListAdapter<OCurrency, CurrencyListAdapter.Currenc
         cellView.textview_name.text = item.name
         val setCurrency = chosenCurrency
         if (setCurrency != null){
-            val calculatedQuote = (1.toDouble() / setCurrency.price) * item.price
+            val calculatedQuote = (amount / setCurrency.price) * item.price
             cellView.textview_price.text = calculatedQuote.toString()
         }
         else{

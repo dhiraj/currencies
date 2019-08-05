@@ -9,11 +9,13 @@
         android:name="com.dhirajgupta.currencies.fragment.CurrencyListFragment"
         tools:layout="@layout/fragment_currency_list">
         <action
-            android:id="@+id/action_currencyListFragment_to_currencyDetailFragment"
-            app:destination="@id/currencyDetailFragment" />
+            android:id="@+id/action_currencyListFragment_to_amountInputFragment"
+            app:destination="@id/amountInputFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
     <fragment
-        android:id="@+id/currencyDetailFragment"
-        android:name="com.dhirajgupta.currencies.fragment.CurrencyDetailFragment"
-        tools:layout="@layout/fragment_currency_detail" />
+        android:id="@+id/amountInputFragment"
+        android:name="com.dhirajgupta.currencies.fragment.AmountInputFragment"
+        tools:layout="@layout/fragment_amount_input" />
 </navigation>

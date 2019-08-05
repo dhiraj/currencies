@@ -2,12 +2,14 @@ package com.dhirajgupta.currencies.fragment
 
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.dhirajgupta.currencies.R
 import com.dhirajgupta.currencies.adapter.CurrencyListAdapter
@@ -65,12 +67,17 @@ class CurrencyListFragment : Fragment() {
                 if (it == null) {
                     viewModel.chooseCurrency(DEFAULT_CURRENCY_ISO)
                 } else {
-                    viewModel.currentScreenTitle.postValue(getString(R.string.currency_list_title_template).format(it.iso_code))
-                    currencyListAdapter().chosenCurrency = it
+                    viewModel.currentScreenTitle.value = getString(R.string.currency_list_title_template,viewModel.amount.value,it.iso_code)
+                    currencyListAdapter().apply {
+                        chosenCurrency = it
+                        amount = viewModel.amount.value!! //Can never be null
+                        notifyDataSetChanged()
+                    }
                 }
             })
             currencyListAdapter().clicked = {
                 viewModel.chooseCurrency(it.iso_code)
+                Handler().postDelayed({findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)},30)
             }
         }
     }

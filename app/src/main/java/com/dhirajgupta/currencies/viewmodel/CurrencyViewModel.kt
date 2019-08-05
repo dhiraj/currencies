@@ -19,15 +19,15 @@ class CurrencyViewModel : ViewModel() {
     private val repository: CurrencyRepository
     var currentScreenTitle: MutableLiveData<String> = MutableLiveData()
 
-    val allCurrencies: LiveData<List<OCurrency>>
     val chosenCurrency: LiveData<OCurrency>
     val currencyList: LiveData<List<OCurrency>>
+    var amount:MutableLiveData<Double> = MutableLiveData()
 
     init {
         repository = ServiceLocator.instance(App.instance).getRepository()
-        allCurrencies = repository.allCurrencies
         chosenCurrency = repository.chosenCurrency
         currencyList = Transformations.switchMap(chosenCurrency) { chosen -> repository.allCurrenciesOtherThan(chosen) }
+        amount.value = 1.toDouble()
         Timber.i("CurrencyViewModel inited...")
     }
 
