@@ -7,4 +7,5 @@
     <string name="choose_amount_template">Choose Amount of %1$s</string>
     <string name="enter_amount">Enter amount</string>
     <string name="enter_amount_helptext_template">Enter the amount of %1$s (%2$s) that you want to convert. Decimal values like 91.99 will work fine.</string>
+    <string name="edit">Edit</string>
 </resources>

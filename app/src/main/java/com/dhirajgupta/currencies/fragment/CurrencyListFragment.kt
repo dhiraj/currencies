@@ -3,9 +3,7 @@ package com.dhirajgupta.currencies.fragment
 
 import android.os.Bundle
 import android.os.Handler
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -30,7 +28,7 @@ class CurrencyListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        setHasOptionsMenu(true)
         return inflater.inflate(R.layout.fragment_currency_list, container, false)
     }
 
@@ -80,5 +78,17 @@ class CurrencyListFragment : Fragment() {
                 Handler().postDelayed({findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)},30)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_currency_list,menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.menuitem_edit -> findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
