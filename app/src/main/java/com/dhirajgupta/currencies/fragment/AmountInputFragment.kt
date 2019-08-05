@@ -1,11 +1,15 @@
 package com.dhirajgupta.currencies.fragment
 
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.getSystemService
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 
@@ -49,6 +53,10 @@ class AmountInputFragment : Fragment() {
             viewModel.amount.postValue(textView.text.toString().toDouble())
             findNavController().popBackStack()
             return@setOnEditorActionListener false
+        }
+        val input_service = parentActivity.getSystemService(Context.INPUT_METHOD_SERVICE)
+        if (input_service != null){
+            (input_service as InputMethodManager).toggleSoftInput(InputMethodManager.SHOW_IMPLICIT,0)
         }
     }
 }

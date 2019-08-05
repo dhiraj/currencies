@@ -4,6 +4,7 @@ package com.dhirajgupta.currencies.fragment
 import android.os.Bundle
 import android.os.Handler
 import android.view.*
+import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -65,7 +66,8 @@ class CurrencyListFragment : Fragment() {
                 if (it == null) {
                     viewModel.chooseCurrency(DEFAULT_CURRENCY_ISO)
                 } else {
-                    viewModel.currentScreenTitle.value = getString(R.string.currency_list_title_template,viewModel.amount.value,it.iso_code)
+                    viewModel.currentScreenTitle.value =
+                        getString(R.string.currency_list_title_template, viewModel.amount.value, it.iso_code)
                     currencyListAdapter().apply {
                         chosenCurrency = it
                         amount = viewModel.amount.value!! //Can never be null
@@ -73,23 +75,23 @@ class CurrencyListFragment : Fragment() {
                     }
                 }
             })
-            currencyListAdapter().clicked = {newcurrency ->
+            currencyListAdapter().clicked = { newcurrency ->
                 val oldcurrency = viewModel.chosenCurrency.value!!
                 val oldamount = viewModel.amount.value!!
                 viewModel.amount.value = (oldamount / oldcurrency.price) * newcurrency.price
                 viewModel.chooseCurrency(newcurrency.iso_code)
-//                Handler().postDelayed({findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)},30)
+                Handler().postDelayed({findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)},30)
             }
         }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_currency_list,menu)
+        inflater.inflate(R.menu.menu_currency_list, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.menuitem_edit -> findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)
         }
         return super.onOptionsItemSelected(item)
