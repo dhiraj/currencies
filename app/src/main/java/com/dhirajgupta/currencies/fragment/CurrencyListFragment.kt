@@ -73,9 +73,12 @@ class CurrencyListFragment : Fragment() {
                     }
                 }
             })
-            currencyListAdapter().clicked = {
-                viewModel.chooseCurrency(it.iso_code)
-                Handler().postDelayed({findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)},30)
+            currencyListAdapter().clicked = {newcurrency ->
+                val oldcurrency = viewModel.chosenCurrency.value!!
+                val oldamount = viewModel.amount.value!!
+                viewModel.amount.value = (oldamount / oldcurrency.price) * newcurrency.price
+                viewModel.chooseCurrency(newcurrency.iso_code)
+//                Handler().postDelayed({findNavController().navigate(R.id.action_currencyListFragment_to_amountInputFragment)},30)
             }
         }
     }

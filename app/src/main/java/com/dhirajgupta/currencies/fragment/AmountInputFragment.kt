@@ -44,7 +44,7 @@ class AmountInputFragment : Fragment() {
         viewModel.currentScreenTitle.postValue(getString(R.string.choose_amount_template, currency.iso_code))
         textview_amount_input_description.text =
             getString(R.string.enter_amount_helptext_template, currency.name, currency.iso_code)
-        edittext_amount.setText(viewModel.amount.value!!.toString())
+        edittext_amount.setText(getString(R.string.price_template,viewModel.amount.value!!))
         edittext_amount.setOnEditorActionListener { textView, i, keyEvent ->
             viewModel.amount.postValue(textView.text.toString().toDouble())
             findNavController().popBackStack()

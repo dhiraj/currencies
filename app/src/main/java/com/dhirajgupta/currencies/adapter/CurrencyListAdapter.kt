@@ -47,10 +47,10 @@ class CurrencyListAdapter() : ListAdapter<OCurrency, CurrencyListAdapter.Currenc
         val setCurrency = chosenCurrency
         if (setCurrency != null){
             val calculatedQuote = (amount / setCurrency.price) * item.price
-            cellView.textview_price.text = calculatedQuote.toString()
+            cellView.textview_price.text = cellView.context.getString(R.string.price_template).format(calculatedQuote)
         }
         else{
-            cellView.textview_price.text = item.price.toString()
+            cellView.textview_price.text = cellView.context.getString(R.string.price_template).format(item.price)
         }
     }
 
