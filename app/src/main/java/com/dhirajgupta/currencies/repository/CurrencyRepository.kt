@@ -31,6 +31,13 @@ class CurrencyRepository(
 
     val chosenCurrency = db.currencyDao().getChosenCurrency()
 
+    fun allCurrenciesOtherThan(currency: OCurrency?): LiveData<List<OCurrency>> {
+        return when (currency) {
+            null -> allCurrencies
+            else -> db.currencyDao().getAllOtherCurrencies(currency.iso_code)
+        }
+    }
+
     fun refreshCurrencies(): LiveData<NetworkState> {
         val networkState = MutableLiveData<NetworkState>()
         networkState.value = NetworkState.LOADING
@@ -70,16 +77,12 @@ class CurrencyRepository(
         return networkState
     }
 
-    /**
-     * Function to add a new currency into the system. Will mostly be called only from within?
-     */
-    @WorkerThread
-    suspend fun insert(currency: OCurrency) {
-        db.currencyDao().insert(currency)
-    }
-
     fun chooseCurrencyWithSymbol(iso_code: String) {
         ioExecutor.execute {
+            if (db.currencyDao().getCurrencyCount() == 0) {
+                Timber.i("Cannot set default currency because there aren't any in the DB, waiting for refresh from Net...")
+                return@execute
+            }
             db.currencyDao().insert(KVPair(K_CHOSEN_CURRENCY, iso_code))
         }
     }

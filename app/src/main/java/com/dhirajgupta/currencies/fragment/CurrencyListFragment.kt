@@ -2,17 +2,13 @@ package com.dhirajgupta.currencies.fragment
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.dhirajgupta.currencies.MainActivity
-
 import com.dhirajgupta.currencies.R
 import com.dhirajgupta.currencies.adapter.CurrencyListAdapter
 import com.dhirajgupta.currencies.model.DEFAULT_CURRENCY_ISO
@@ -46,16 +42,17 @@ class CurrencyListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val parentActivity = activity
-        if (parentActivity != null){
+        if (parentActivity != null) {
             val viewModel = ViewModelProviders.of(parentActivity).get(CurrencyViewModel::class.java)
             recyclerview_currency.apply {
                 adapter = CurrencyListAdapter()
                 layoutManager = LinearLayoutManager(view.context)
             }
-            viewModel.allCurrencies.observe(this@CurrencyListFragment, Observer { currencies ->
+            viewModel.currencyList.observe(this@CurrencyListFragment, Observer { currencies ->
                 Timber.i("Currencies updated: ${currencies.size}")
                 currencyListAdapter().submitList(currencies)
-                if (currencies.size == 0 && !autoFetchedCurrencyList){
+                if (currencies.size == 0 && !autoFetchedCurrencyList) {
+                    Timber.i("Currencies list is empty, refreshing from API...")
                     autoFetchedCurrencyList = true
                     viewModel.refreshCurrencies().observe(this@CurrencyListFragment, networkStateObserver)
                 }
@@ -65,10 +62,9 @@ class CurrencyListFragment : Fragment() {
             }
             viewModel.chosenCurrency.observe(this@CurrencyListFragment, Observer {
                 Timber.i("Chosen currency changed: $it")
-                if (it == null){
+                if (it == null) {
                     viewModel.chooseCurrency(DEFAULT_CURRENCY_ISO)
-                }
-                else{
+                } else {
                     viewModel.currentScreenTitle.postValue(getString(R.string.currency_list_title_template).format(it.iso_code))
                     currencyListAdapter().chosenCurrency = it
                 }
