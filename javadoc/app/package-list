@@ -1,0 +1,11 @@
+$dokka.format:gfm
+$dokka.linkExtension:md
+
+com.dhirajgupta.currencies
+com.dhirajgupta.currencies.adapter
+com.dhirajgupta.currencies.api
+com.dhirajgupta.currencies.db
+com.dhirajgupta.currencies.fragment
+com.dhirajgupta.currencies.model
+com.dhirajgupta.currencies.repository
+com.dhirajgupta.currencies.viewmodel
